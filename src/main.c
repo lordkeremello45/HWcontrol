@@ -1,5 +1,6 @@
 #include <ntddk.h>
 
+#include "include/hwcontrol.h"
 // Sürücü durdurulduğunda yapılacak işlem
 VOID DriverUnload(PDRIVER_OBJECT DriverObject) {
     UNREFERENCED_PARAMETER(DriverObject);
