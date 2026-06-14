@@ -1,25 +1,27 @@
-#ifndef HWCONTROL_H
-#define HWCONTROL_H
+#pragma once
 
-#include <ntddk.h>
+// C++ ve C projelerinde uyumlu olması için
+#ifdef __cplusplus
+extern "C" {
+#endif
 
-// 1. Sürücü Kimliği ve Ayarlar
-#define DRIVER_NAME L"HWControl"
-#define DEVICE_NAME L"\\Device\\HWControl"
-#define SYMLINK_NAME L"\\DosDevices\\HWControl"
+#include <ntddk.h> // Kernel tanımları için gerekli
 
-// 2. Kontrol Yapıları (Donanım ayarlarını burada tutacağız)
-typedef struct _HW_CONTROL_DATA {
-    ULONG Voltage;       // Voltaj değeri
-    ULONG FanSpeed;      // Fan hızı
-    BOOLEAN IsActive;    // Donanım aktif mi?
-} HW_CONTROL_DATA, *PHW_CONTROL_DATA;
+// Cihaz isimleri
+#define DEVICE_NAME     L"\\Device\\HWControl"
+#define SYMLINK_NAME    L"\\DosDevices\\HWControl"
 
-// 3. Fonksiyon Prototipleri (Sürücünün yapacağı işler)
-NTSTATUS DriverEntry(PDRIVER_OBJECT DriverObject, PUNICODE_STRING RegistryPath);
-VOID DriverUnload(PDRIVER_OBJECT DriverObject);
+// IOCTL Komut Kodu (Sürücüye ne yapması gerektiğini söyler)
+// 0x801, 0x802 gibi özel kodlar veriyoruz
+#define IOCTL_SET_FAN_SPEED CTL_CODE(FILE_DEVICE_UNKNOWN, 0x801, METHOD_BUFFERED, FILE_ANY_ACCESS)
 
-// Donanımla haberleşme fonksiyonu (İleride içini dolduracağız)
-NTSTATUS ReadHardwareRegister(ULONG RegisterAddress, PULONG Value);
+// Veri Yapısı (Python'dan gönderilen paket)
+#pragma pack(push, 1)
+typedef struct _FAN_COMMAND {
+    unsigned long speed_percentage; // 0-100 arası değer
+} FAN_COMMAND, *PFAN_COMMAND;
+#pragma pack(pop)
 
-#endif // HWCONTROL_H
+#ifdef __cplusplus
+}
+#endif
