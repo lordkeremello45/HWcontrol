@@ -1,27 +1,28 @@
 #pragma once
 
-// C++ ve C projelerinde uyumlu olması için
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-#include <ntddk.h> // Kernel tanımları için gerekli
+#include <ntddk.h> 
 
-// Cihaz isimleri
+// --- CPU ve Donanım Fonksiyon Tanımları ---
+void ApplyCpuBoost(); 
+
+// --- Cihaz İsimleri ---
 #define DEVICE_NAME     L"\\Device\\HWControl"
 #define SYMLINK_NAME    L"\\DosDevices\\HWControl"
 
-// IOCTL Komut Kodu (Sürücüye ne yapması gerektiğini söyler)
-// 0x801, 0x802 gibi özel kodlar veriyoruz
+// --- IOCTL Komut Kodu ---
 #define IOCTL_SET_FAN_SPEED CTL_CODE(FILE_DEVICE_UNKNOWN, 0x801, METHOD_BUFFERED, FILE_ANY_ACCESS)
 
-// Veri Yapısı (Python'dan gönderilen paket)
+// --- Veri Yapısı ---
 #pragma pack(push, 1)
 typedef struct _FAN_COMMAND {
-    unsigned long speed_percentage; // 0-100 arası değer
+    unsigned long speed_percentage; 
 } FAN_COMMAND, *PFAN_COMMAND;
 #pragma pack(pop)
 
 #ifdef __cplusplus
-extern "C" void ApplyCpuBoost();}
+}
 #endif
