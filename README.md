@@ -19,7 +19,7 @@ This project is an experimental, kernel-level hardware control utility designed 
 **Warning:** This is a kernel-level project. Improper use or modification may cause system instability or crashes. Use only in isolated environments (e.g., virtual machines) for testing purposes.
 
 ## License
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+This project is licensed under the GNU V3.0 License. See the [LICENSE](LICENSE) file for details.
 ## Build Instructions
 1. Open the project in Visual Studio (with WDK installed).
 2. Configure the project as a "Kernel Mode Driver (KMDF)".
