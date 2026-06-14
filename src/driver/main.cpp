@@ -12,8 +12,7 @@ NTSTATUS DriverDispatch(PDEVICE_OBJECT DeviceObject, PIRP Irp) {
             PFAN_COMMAND fanCmd = (PFAN_COMMAND)Irp->AssociatedIrp.SystemBuffer;
             if (fanCmd && irpStack->Parameters.DeviceIoControl.InputBufferLength >= sizeof(FAN_COMMAND)) {
                 
-                // --- BURAYA DONANIM MANTIĞINI EKLEYECEĞİZ ---
-                // Örnek: SetFanSpeed(fanCmd->speed_percentage);
+                // Donanım mantığı buraya eklenecek (Örn: ApplyFanSpeed(fanCmd->speed_percentage);)
                 DbgPrint("HWControl: Yeni Fan Hızı: %lu\n", fanCmd->speed_percentage);
                 
                 Irp->IoStatus.Status = STATUS_SUCCESS;
@@ -40,6 +39,10 @@ extern "C" NTSTATUS DriverEntry(PDRIVER_OBJECT DriverObject, PUNICODE_STRING Reg
 
     NTSTATUS status = IoCreateDevice(DriverObject, 0, &devName, FILE_DEVICE_UNKNOWN, 0, FALSE, &deviceObject);
     if (!NT_SUCCESS(status)) return status;
+
+    // --- CPU OPTİMİZASYONUNU TETİKLE ---
+    // Aygıt oluşturulduktan hemen sonra modern işlemciyi (Ryzen/Intel) optimize et
+    ApplyCpuBoost();
 
     status = IoCreateSymbolicLink(&symLink, &devName);
     if (!NT_SUCCESS(status)) {
