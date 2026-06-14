@@ -23,5 +23,5 @@ typedef struct _FAN_COMMAND {
 #pragma pack(pop)
 
 #ifdef __cplusplus
-}
+extern "C" void ApplyCpuBoost();}
 #endif
